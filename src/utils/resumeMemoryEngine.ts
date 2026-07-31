@@ -267,7 +267,7 @@ export function generateDetailedSuggestions(report: MockRoastReport, snapshot: I
     section: 'Header & Summary',
     whatIsWrong: 'Summary is missing or uses generic buzzwords like "Passionate team player looking for growth."',
     whyItMatters: 'Generic summaries waste prime resume real estate without highlighting your core role and top achievements.',
-    howToImprove: 'Craft a 2-3 sentence executive pitch stating your target role, years of hands-on stack experience, and key differentiator.',
+    howToImprove: 'Craft a 2-3 sentence executive pitch stating your core experience, years of hands-on stack experience, and key differentiator.',
     exampleBefore: 'Hardworking software engineering student seeking an entry level role to apply my skills.',
     exampleAfter: 'Results-driven Full-Stack Engineer with experience building high-throughput web apps and microservices using TypeScript, Node.js, and AWS.',
     impactScore: 0.2
@@ -284,7 +284,6 @@ export function createInitialMemory(report: MockRoastReport): ResumeMemory {
   const originalSnapshot: ImprovedResumeData = report.originalResumeData || report.improvedData || {
     header: {
       name: candidate?.name || "Candidate Name",
-      title: candidate?.detectedRole || "Software Engineer",
       email: "candidate@example.com",
       phone: "+1 (555) 019-2831",
       linkedin: "linkedin.com/in/candidate",
@@ -292,7 +291,7 @@ export function createInitialMemory(report: MockRoastReport): ResumeMemory {
       portfolio: "candidate.dev",
       location: "San Francisco, CA"
     },
-    professionalSummary: `Dedicated ${candidate?.detectedRole || "Software Engineer"} with hands-on expertise building software solutions. Seeking to leverage technical skills in high-velocity teams.`,
+    professionalSummary: "Candidate with relevant experience. Seeking a career direction that aligns with demonstrated skills and achievements.",
     skills: [
       { category: "Languages & Frameworks", items: ["TypeScript", "React", "Node.js", "Python"] },
       { category: "Databases & Tools", items: ["PostgreSQL", "Git", "Docker", "REST APIs"] }
@@ -311,7 +310,7 @@ export function createInitialMemory(report: MockRoastReport): ResumeMemory {
     experience: [
       {
         company: "Tech Solutions",
-        role: candidate?.detectedRole || "Software Engineer",
+        role: "",
         dates: "2023 - Present",
         location: "San Francisco, CA",
         bulletPoints: [

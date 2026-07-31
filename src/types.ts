@@ -31,7 +31,6 @@ export type DecisionType = 'TRASH' | 'GHOST' | 'REJECT_SOFT' | 'INTERVIEW_UNLIKE
 
 export interface CandidateProfile {
   name: string;
-  detectedRole: string;
   experienceLevel: 'Student' | 'Fresher' | 'Intern' | 'Junior' | 'Mid-level' | 'Senior';
   industry: string;
   sectionsFound: {
@@ -135,7 +134,6 @@ export interface ImprovementSuggestion {
 export interface ImprovedResumeData {
   header: {
     name: string;
-    title: string;
     email: string;
     phone: string;
     linkedin: string;
@@ -174,7 +172,6 @@ export interface ImprovedResumeData {
 export interface DeveloperDebugData {
   rawExtractedText: string;
   detectedSections: string[];
-  detectedRole: string;
   detectedSkills: string[];
   detectedProjects: string[];
   detectedExperience: string[];

@@ -52,7 +52,7 @@ export default function ImprovePage({
 
   // Checklist Completion States
   const [checklistItems, setChecklistItems] = useState([
-    { id: 'c1', section: 'Summary', text: 'Mention target role & career direction', done: true },
+    { id: 'c1', section: 'Summary', text: 'Mention career direction & headline clarity', done: true },
     { id: 'c2', section: 'Summary', text: 'Highlight key technologies and core domain strength', done: false },
     { id: 'c3', section: 'Experience', text: 'Begin bullet points with high-impact action verbs (Spearheaded, Engineered)', done: false },
     { id: 'c4', section: 'Experience', text: 'Quantify achievements with measurable metrics (%, $, latency, scale)', done: false },
@@ -78,11 +78,10 @@ export default function ImprovePage({
   // Initial Coach Questions Setup
   useEffect(() => {
     if (report && coachMessages.length === 0) {
-      const candidateRole = report.candidateProfile?.detectedRole || 'Software Engineer';
       setCoachMessages([
         {
           sender: 'coach',
-          text: `Hello! I'm Recruiter.exe sitting beside you. Based on your uploaded resume for a ${candidateRole} role, here are three high-value improvements we can collaborate on:`,
+          text: `Hello! I'm Recruiter.exe sitting beside you. Based on your uploaded resume, here are three high-value improvements we can collaborate on:`,
           options: [
             {
               label: "✨ Add Measurable Business Metrics to Projects",
@@ -153,9 +152,9 @@ export default function ImprovePage({
 
       if (sectionKey === 'summary') {
         if (mode === 'impact' || mode === 'ats') {
-          updated.professionalSummary = `High-performing ${updated.header.title || 'Professional'} with a proven track record in architecting high-throughput systems, reducing latency by 35%, and driving cross-functional engineering deliverables.`;
+          updated.professionalSummary = `High-performing professional with a proven track record in architecting high-throughput systems, reducing latency by 35%, and driving cross-functional engineering deliverables.`;
         } else {
-          updated.professionalSummary = `Accomplished ${updated.header.title || 'Engineer'} skilled in scalable software design, API integration, and modern web frameworks. Focused on clean code standards and measurable product impact.`;
+          updated.professionalSummary = `Accomplished professional skilled in scalable software design, API integration, and modern web frameworks. Focused on clean code standards and measurable product impact.`;
         }
       } else if (sectionKey === 'experience') {
         updated.experience = updated.experience.map(exp => ({
@@ -283,7 +282,7 @@ export default function ImprovePage({
         });
       }
     } else if (sugg.id === 'sugg-summary') {
-      updated.professionalSummary = `Results-oriented ${updated.header.title || 'Engineer'} with proven experience delivering high-throughput web applications and scalable backend architectures.`;
+      updated.professionalSummary = `Results-oriented professional with proven experience delivering high-throughput web applications and scalable backend architectures.`;
     }
 
     updateDataWithHistory(updated);
@@ -617,19 +616,6 @@ export default function ImprovePage({
             </div>
 
             <div>
-              <label className="block text-gray-400 mb-1">Target Job Title</label>
-              <input
-                type="text"
-                value={currentData.header.title}
-                onChange={(e) => updateDataWithHistory({
-                  ...currentData,
-                  header: { ...currentData.header, title: e.target.value }
-                })}
-                className="w-full p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 text-gray-900 dark:text-white outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <div>
               <label className="block text-gray-400 mb-1">Email</label>
               <input
                 type="text"
@@ -751,7 +737,7 @@ export default function ImprovePage({
                   const updated = cloneResumeData(currentData);
                   updated.experience.push({
                     company: 'New Company Inc.',
-                    role: 'Software Engineer',
+                    role: '',
                     dates: '2023 - Present',
                     bulletPoints: ['Engineered scalable application features delivering high user engagement.']
                   });
@@ -832,7 +818,7 @@ export default function ImprovePage({
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-400 mb-1">Role Title</label>
+                    <label className="block text-gray-400 mb-1">Title</label>
                     <input
                       type="text"
                       value={exp.role}

@@ -46,7 +46,7 @@ export default function AnalysisPlaceholder({ files, onBack, triggerToast }: Ana
     "✓ Stage 1: Validating PDF file structure & headers...",
     "✓ Stage 2: Extracting raw resume content & text layout...",
     "✓ Stage 3: Parsing sections (Education, Experience, Projects, Skills)...",
-    "✓ Stage 4: Understanding candidate profile, target role & career level...",
+    "✓ Stage 4: Understanding candidate profile and career level...",
     "✓ Stage 5: Agent 1 (ATS Expert) checking keyword coverage & formatting...",
     "✓ Stage 5: Agent 2 (Recruiter) evaluating first impression & readability...",
     "✓ Stage 5: Agent 3 (Project Reviewer) inspecting technical depth & metrics...",
@@ -367,9 +367,6 @@ export default function AnalysisPlaceholder({ files, onBack, triggerToast }: Ana
 
                       {profile && (
                         <div className="flex flex-wrap items-center gap-2 text-[10px] font-mono font-bold uppercase">
-                          <span className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full">
-                            Role: {profile.detectedRole}
-                          </span>
                           <span className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-3 py-1 rounded-full">
                             Level: {profile.experienceLevel}
                           </span>
@@ -968,9 +965,6 @@ export default function AnalysisPlaceholder({ files, onBack, triggerToast }: Ana
                               <h1 className="text-2xl font-black tracking-tight text-slate-900 font-display">
                                 {improvedData.header.name}
                               </h1>
-                              <p className="text-sm font-bold text-blue-600 font-mono">
-                                {improvedData.header.title}
-                              </p>
                               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-mono">
                                 {improvedData.header.email && <span>{improvedData.header.email}</span>}
                                 {improvedData.header.phone && <span>• {improvedData.header.phone}</span>}

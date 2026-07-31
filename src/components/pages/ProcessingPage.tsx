@@ -14,7 +14,7 @@ const SCAN_LOGS = [
   "Validating PDF file structure & metadata...",
   "Extracting raw resume text & layout structure...",
   "Parsing sections (Education, Experience, Projects, Skills)...",
-  "Understanding candidate profile, target role & career level...",
+  "Understanding candidate profile and career level...",
   "Agent 1 (ATS Expert) checking keyword coverage & formatting...",
   "Agent 2 (Recruiter) evaluating first impression & readability...",
   "Agent 3 (Project Reviewer) inspecting technical depth & metrics...",
@@ -92,15 +92,16 @@ export default function ProcessingPage({ files, onComplete, onError }: Processin
           });
 
           if (!response.ok) {
-            console.warn(`Server status ${response.status}. Using fallback report generator.`);
-            fetchedReports.push(generateFallbackReport(uploadedFile.name, uploadedFile.id));
+            onError(`Resume analysis failed with status ${response.status}. Please retry.`);
+            return;
+          }
+
+          const data = await response.json();
+          if (data.report) {
+            fetchedReports.push(data.report);
           } else {
-            const data = await response.json();
-            if (data.report) {
-              fetchedReports.push(data.report);
-            } else {
-              fetchedReports.push(generateFallbackReport(uploadedFile.name, uploadedFile.id));
-            }
+            onError("Resume analysis returned invalid data. Please retry.");
+            return;
           }
         }
 
@@ -112,10 +113,7 @@ export default function ProcessingPage({ files, onComplete, onError }: Processin
       } catch (err: any) {
         console.error("Pipeline analysis error:", err);
         if (isSubscribed) {
-          const fallbackReports = files.map(f => generateFallbackReport(f.name, f.id));
-          setTimeout(() => {
-            onComplete(fallbackReports);
-          }, 600);
+          onError("Resume analysis failed due to a network or service error. Please retry.");
         }
       }
     }

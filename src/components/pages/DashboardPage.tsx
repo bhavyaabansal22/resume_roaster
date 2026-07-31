@@ -48,9 +48,6 @@ export default function DashboardPage({ report, onNavigate }: DashboardPageProps
           {/* Role & Seniority Badges */}
           {profile && (
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-              <span className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full font-bold">
-                Role: {profile.detectedRole}
-              </span>
               <span className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-3 py-1 rounded-full font-bold">
                 Level: {profile.experienceLevel}
               </span>
@@ -109,15 +106,6 @@ export default function DashboardPage({ report, onNavigate }: DashboardPageProps
           <p className="text-[10px] text-gray-500 dark:text-zinc-400 mt-1 font-mono">Callback rate</p>
         </div>
 
-        <div className="glass p-5 rounded-2xl border border-gray-200/60 dark:border-zinc-800 text-left">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">
-            Detected Role
-          </span>
-          <div className="text-sm font-bold font-display text-gray-900 dark:text-white mt-2 truncate">
-            {profile?.detectedRole || "Software Engineer"}
-          </div>
-          <p className="text-[10px] text-gray-500 dark:text-zinc-400 mt-1 font-mono">Target match</p>
-        </div>
 
         <div className="glass p-5 rounded-2xl border border-gray-200/60 dark:border-zinc-800 text-left">
           <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">

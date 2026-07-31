@@ -21,11 +21,10 @@ export default function DeveloperDebugModal({
   const debugData = report?.developerDebugData || {
     rawExtractedText: report ? `--- PARSED DOCUMENT SOURCE TEXT (${report.fileName}) ---
 CANDIDATE: ${report.candidateProfile?.name || 'Jane Doe'}
-DETECTED ROLE: ${report.candidateProfile?.detectedRole || 'Software Engineer'}
 EXPERIENCE LEVEL: ${report.candidateProfile?.experienceLevel || 'Mid-level'}
 
 === SUMMARY ===
-${report.improvedData?.professionalSummary || 'Experienced Software Engineer with hands-on skills in full-stack web application development, microservices, and databases.'}
+${report.improvedData?.professionalSummary || 'No professional summary available.'}
 
 === EXPERIENCE ===
 ${report.improvedData?.experience.map(e => `[${e.company}] ${e.role} (${e.dates}): ${e.bulletPoints.join(' ')}`).join('\n') || 'Software Engineer at TechCorp'}
@@ -37,9 +36,8 @@ ${report.improvedData?.projects.map(p => `[${p.title}] Tech: ${p.techStack.join(
 ${report.improvedData?.skills.map(s => `${s.category}: ${s.items.join(', ')}`).join(' | ') || 'TypeScript, React, Node.js, Python, PostgreSQL, AWS, Docker'}
 ` : 'No resume document parsed yet.',
     detectedSections: report?.candidateProfile ? Object.keys(report.candidateProfile.sectionsFound).filter(k => (report.candidateProfile?.sectionsFound as any)[k]) : ['summary', 'experience', 'projects', 'skills', 'education'],
-    detectedRole: report?.candidateProfile?.detectedRole || 'Software Engineer',
-    detectedSkills: report?.improvedData?.skills.flatMap(s => s.items) || ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker'],
-    detectedProjects: report?.improvedData?.projects.map(p => p.title) || ['Full-Stack Dashboard'],
+    detectedSkills: report?.improvedData?.skills.flatMap(s => s.items) || [],
+    detectedProjects: report?.improvedData?.projects.map(p => p.title) || [],
     detectedExperience: report?.improvedData?.experience.map(e => `${e.role} @ ${e.company}`) || ['Engineer @ TechCorp'],
     detectedCertifications: report?.improvedData?.certifications || ['AWS Certified Developer'],
     confidenceScore: 98.4,
@@ -114,14 +112,7 @@ ${report.improvedData?.skills.map(s => `${s.category}: ${s.items.join(', ')}`).j
             </div>
 
             <div className="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-1">
-              <span className="text-[10px] text-zinc-500 block uppercase flex items-center gap-1">
-                <Cpu className="w-3 h-3 text-purple-400" />
-                Detected Role
-              </span>
-              <span className="text-xs font-bold text-purple-300 block truncate">
-                {debugData.detectedRole}
-              </span>
-            </div>
+              </div>
 
             <div className="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-1">
               <span className="text-[10px] text-zinc-500 block uppercase flex items-center gap-1">

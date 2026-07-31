@@ -36,15 +36,6 @@ export async function downloadResumePDF(resume: ImprovedResumeData) {
   doc.text(resume.header.name || "Candidate Name", margin, y);
   y += 20;
 
-  // Title
-  if (resume.header.title) {
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(12);
-    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-    doc.text(resume.header.title, margin, y);
-    y += 16;
-  }
-
   // Contact line
   doc.setFontSize(9);
   doc.setTextColor(100, 116, 139);
@@ -247,21 +238,6 @@ export async function downloadResumeDOCX(resume: ImprovedResumeData) {
     })
   );
 
-  // Title
-  if (resume.header.title) {
-    children.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: resume.header.title,
-            bold: true,
-            color: '2563EB',
-            size: 24,
-          }),
-        ],
-      })
-    );
-  }
 
   // Contact Info
   const contacts = [
@@ -445,7 +421,6 @@ export async function downloadResumeDOCX(resume: ImprovedResumeData) {
  */
 export function formatResumeAsMarkdown(resume: ImprovedResumeData): string {
   let md = `# ${resume.header.name || "Candidate Name"}\n`;
-  if (resume.header.title) md += `**${resume.header.title}**\n`;
 
   const contacts = [
     resume.header.email,

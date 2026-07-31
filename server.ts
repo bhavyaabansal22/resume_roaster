@@ -67,7 +67,6 @@ app.post("/api/roast", async (req, res) => {
           buzzwordCounter: [],
           candidateProfile: {
             name: "Unknown / Blank Candidate",
-            detectedRole: "Unclear / Blank Document",
             experienceLevel: "Fresher",
             industry: "Unknown",
             sectionsFound: { education: false, skills: false, experience: false, projects: false, certifications: false, achievements: false, summary: false },
@@ -117,7 +116,6 @@ app.post("/api/roast", async (req, res) => {
           buzzwordCounter: [],
           candidateProfile: {
             name: "Corrupted File Candidate",
-            detectedRole: "Unparseable Document",
             experienceLevel: "Fresher",
             industry: "Unknown",
             sectionsFound: { education: false, skills: false, experience: false, projects: false, certifications: false, achievements: false, summary: false },
@@ -161,15 +159,17 @@ app.post("/api/roast", async (req, res) => {
       text: `You are RECRUITER.EXE — an expert, brutally honest, evidence-based resume evaluator and recruiter simulator.
 Perform a thorough, evidence-backed inspection of the candidate's resume uploaded in this document (File name: "${fileName}").
 
-CRITICAL RULES:
-1. NEVER generate generic comments.
-2. NEVER invent information or mention projects/skills that are NOT in the resume.
-3. EVERY criticism and joke MUST cite exact evidence (quotes, numbers, specific missing links/skills) directly extracted from this resume.
-4. If something is genuinely impressive or well-quantified, acknowledge it in the praise section!
-5. Generate unique evidence-backed analyses for all 7 recruiter personas (Friendly, Corporate HR, Hiring Manager, Startup Founder, FAANG Recruiter, Gen Z Recruiter, ATS Robot) analyzing THIS SAME RESUME content.
+STRICT ACCURACY RULES:
+1. ONLY use information directly visible in the uploaded resume data. DO NOT infer or invent job titles, companies, dates, skills, accomplishments, certifications, or contact details that are not explicitly present.
+2. If a section is missing from the resume (Education, Projects, Certifications, Achievements, etc.), mark it as missing and do not fabricate any content.
+3. If contact details are missing, report them as unavailable and do not guess any email, phone, LinkedIn, GitHub, or portfolio URL.
+4. NEVER generate generic comments. EVERY statement must be grounded in exact evidence extracted from the resume text.
+5. If the resume text does not support a claim, the output field must be empty or 'false' rather than invented.
+6. Do not infer or invent a target role or preferred job title from the resume layout, filename, or any external context. Only report information explicitly present in the document.
+7. Generate unique evidence-backed analyses for all 7 recruiter personas (Friendly, Corporate HR, Hiring Manager, Startup Founder, FAANG Recruiter, Gen Z Recruiter, ATS Robot) analyzing THIS SAME RESUME content.
 
 Return JSON in the requested schema containing:
-- candidateProfile: extracted candidate name, detected target role, experience level (Student, Fresher, Intern, Junior, Mid-level, Senior), industry, detected sections, contact links presence.
+- candidateProfile: extracted candidate name, experience level (Student, Fresher, Intern, Junior, Mid-level, Senior), industry, detected sections, contact links presence.
 - resumeScore: float or int out of 10 (e.g. 3.5).
 - atsScore: int out of 100 (e.g. 28).
 - hiringProbability: int percentage out of 100 (e.g. 14).
@@ -203,7 +203,6 @@ Return JSON in the requested schema containing:
                 type: Type.OBJECT,
                 properties: {
                   name: { type: Type.STRING },
-                  detectedRole: { type: Type.STRING },
                   experienceLevel: { type: Type.STRING },
                   industry: { type: Type.STRING },
                   sectionsFound: {
@@ -231,7 +230,7 @@ Return JSON in the requested schema containing:
                     required: ["email", "phone", "linkedin", "github", "portfolio"],
                   },
                 },
-                required: ["name", "detectedRole", "experienceLevel", "industry", "sectionsFound", "contactLinks"],
+                required: ["name", "experienceLevel", "industry", "sectionsFound", "contactLinks"],
               },
               resumeScore: { type: Type.NUMBER },
               atsScore: { type: Type.INTEGER },
@@ -476,22 +475,18 @@ app.post("/api/improve-resume", async (req, res) => {
 Your task is to take the candidate's uploaded resume (File: "${fileName}") and the audit analysis report, and generate a modernized, recruiter-approved, ATS-optimized version of the candidate's resume.
 
 STRICT ACCURACY RULES:
-1. NEVER FABRICATE OR INVENT fake qualifications, fake work experience, fake companies, fake job titles, fake certifications, or fake metric numbers.
-2. PRESERVE ALL TRUTHFUL INFORMATION provided by the candidate.
-3. YOU MAY ONLY:
-   - Rewrite weak bullet points into high-impact action-verb statements (e.g., "Developed and deployed a responsive React-based web application featuring authentication and dynamic UI").
-   - Fix grammar, spelling, and tone.
-   - Standardize formatting and section ordering.
-   - Categorize technical and soft skills into logical domain groups.
-   - Optimize keyword placement for ATS parsers.
-   - Rewrite the professional summary into a compelling 2-3 sentence overview.
-   - Clean up project descriptions and highlight measurable impact where supported by evidence.
+1. NEVER FABRICATE OR INVENT fake qualifications, fake work experience, fake companies, fake job titles, fake certifications, fake degrees, fake dates, fake metrics, or fake contact information.
+2. PRESERVE ALL TRUTHFUL INFORMATION as provided by the candidate's uploaded resume. Do not add any new facts or achievements that are not explicitly present in the resume text.
+3. Do not infer additional skills, technologies, or accomplishments beyond what the resume contains.
+4. If a section is missing from the resume, return an empty list for that section rather than inventing content.
+5. When improving bullets, preserve the same tools, outcomes, and impact that exist in the original resume. Only improve clarity, grammar, formatting, and ATS phrasing.
+6. If the resume contains no evidence for a particular field, leave that field blank or empty instead of fabricating content.
 
 Audit report context: ${JSON.stringify(currentReport || {})}
 
 Return JSON matching the schema with:
 - improvedResume: header (name, title, email, phone, linkedin, github, portfolio, location), professionalSummary, skills (array of category & items), projects, experience, education, certifications, achievements.
-- improvementComparison: bulletPointsRewrittenCount, grammarFixesCount, atsScoreBefore, atsScoreAfter, resumeScoreBefore, resumeScoreAfter, hiringProbabilityBefore, hiringProbabilityAfter, highlightedChanges (array of key enhancements).`
+- improvementComparison: bulletPointsRewrittenCount, grammarFixesCount, atsScoreBefore, atsScoreAfter, resumeScoreBefore, resumeScoreAfter, hiringProbabilityBefore, hiringProbabilityAfter, highlightedChanges (array of key enhancements).`},{
     });
 
     let improvedResume = null;
